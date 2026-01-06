@@ -1,0 +1,18 @@
+{
+  "app_id": "ambiance",
+  "name": "Ambiance",
+  "zeos_registry": "https://github.com/rgsuarez/zeOS/blob/main/apps/REGISTRY.json",
+  "soul_location": "zeOS:apps/ambiance/AMBIANCE_SOUL.md",
+  "session_journals": "rgsuarez/ambiance/session-journals/",
+  "kernel_version": "live",
+  "created": "2026-01-06",
+  "visibility": "public",
+  "north_star": "Universal cognitive prosthetic with ambient AI awareness",
+  "integration_points": [
+    "outpost",
+    "ai-boardroom",
+    "blueprint",
+    "zeos-core"
+  ],
+  "note": "This app boots with live zeOS kernel. No version pinning. Sensory layer for autonomous AI entity."
+}
