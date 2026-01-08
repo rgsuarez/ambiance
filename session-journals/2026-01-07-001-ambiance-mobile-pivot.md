@@ -26,5 +26,17 @@ ended: null
 - **Privacy:** Shifted to on-device processing + E2E encryption.
 - **Integration:** zeOS Core integration remains standard (API Gateway -> Boardroom).
 
+## Work Since Pivot Checkpoint
+
+### Blueprint Generation & Activation
+- **Consultation:** Dispatched query to 5 Outpost agents.
+  - **Consensus:** Approved "Backend-First (Linux)" strategy. Mac only for iOS build.
+  - **Architecture:** Validated FastAPI + WebSockets for low-latency audio stream.
+- **Blueprint Generated:** `ESTABLISH_AMBIANCE_MOBILE_FOUNDATION.md`
+  - **Tiers:** 3 (Audio Pipeline, Gateway, zeOS Integration).
+  - **Tasks:** 9 atomic tasks.
+  - **Validation:** Includes CLI Test Client for Linux-only E2E validation.
+- **Activation:** Set as active blueprint in `MASTER_ROADMAP.md`.
+
 ### Current Focus
-- Initializing Phase 1: iOS App Scaffolding.
+- Executing **T0.1: Implement Whisper Transcription Service**.

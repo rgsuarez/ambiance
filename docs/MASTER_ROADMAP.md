@@ -3,9 +3,9 @@ document: "MASTER_ROADMAP"
 version: "2.0.0"
 status: "ACTIVE"
 created: "2026-01-06"
-updated: "2026-01-07"
+updated: "2026-01-08"
 owner: "Richie Suarez"
-active_blueprint: null
+active_blueprint: "blueprints/ESTABLISH_AMBIANCE_MOBILE_FOUNDATION.md"
 ---
 
 # Ambiance — Master Roadmap
