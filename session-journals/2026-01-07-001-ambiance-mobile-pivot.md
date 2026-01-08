@@ -1,68 +1,26 @@
 ---
 type: session-journal
 project: ambiance
-status: complete
+status: active
 started: 2026-01-07T06:45:00Z
-ended: 2026-01-08T07:55:00Z
+ended: null
 ---
 
 ## Work Since Last Save
 
-### Strategic Pivot: Ambiance Mobile
-- **Decision:** Shifted North Star from Meta Ray-Ban glasses to **iOS + AirPods** architecture.
-- **Rationale:**
-  - Removed "walled garden" risk (Meta SDK limitations).
-  - Leveraging existing hardware (iPhone/AirPods/MacBook Air).
-  - Zero latency (direct API access vs. Meta Cloud hop).
-  - Superior sensor access (HealthKit, Location, Files).
-  - Action Button integration for instant "Push-to-Talk".
+### Phase 1: Completion & Cleanup
+- **Git Hygiene:** Successfully removed `.venv` from git history via soft reset and added `.gitignore`.
+- **Release:** Tagged `v0.1.0-alpha` and pushed to GitHub (Pack size reduced from >2GB to ~21KB).
+- **Artifacts:** Finalized `Dockerfile` and `docker-compose.yml` for deployment.
 
-### Artifacts Updated
-- **docs/MASTER_ROADMAP.md:** Complete rewrite. Removed "Acquire Glasses". Added "Scaffold iOS App".
-- **docs/SYSTEM_ARCHITECTURE.md:** Updated diagram to "Voice-to-Action" pipeline. Replaced Edge/Meta layers with iOS Client/Gateway.
-
-### Constraints & Notes
-- **Hardware:** MacBook Air confirmed sufficient for iOS dev.
-- **Privacy:** Shifted to on-device processing + E2E encryption.
-- **Integration:** zeOS Core integration remains standard (API Gateway -> Boardroom).
-
-## Work Since Pivot Checkpoint
-
-### Blueprint Generation & Activation
-- **Consultation:** Dispatched query to 5 Outpost agents.
-  - **Consensus:** Approved "Backend-First (Linux)" strategy. Mac only for iOS build.
-  - **Architecture:** Validated FastAPI + WebSockets for low-latency audio stream.
-- **Blueprint Generated:** `ESTABLISH_AMBIANCE_MOBILE_FOUNDATION.md`
-  - **Tiers:** 3 (Audio Pipeline, Gateway, zeOS Integration).
-  - **Tasks:** 9 atomic tasks.
-  - **Validation:** Includes CLI Test Client for Linux-only E2E validation.
-- **Activation:** Set as active blueprint in `MASTER_ROADMAP.md`.
-
-## Work Since Generation Checkpoint
-
-### Tier 0: Foundation
-- **T0.1 FastAPI WebSocket Server:** Implemented bidirectional WebSocket gateway with JSON/Binary support.
-- **T0.2 Audio Stream Handler:** Implemented ring buffer for PCM audio chunks.
-- **Tests:** Added `tests/gateway/` covering connection lifecycle and audio buffering.
-
-### Tier 1: Voice Processing (Partial)
-- **T1.1 Whisper Service:** Implemented `WhisperService` with `openai-whisper` integration.
-- **T1.2 Voice Activity Detection:** Implemented `VoiceActivityDetector` using `webrtcvad` with stateful frame buffering.
-- **Tests:** Added `tests/voice/` with mocked model loading and VAD logic verification.
-- **Dependencies:** Installed `fastapi`, `uvicorn`, `websockets`, `numpy`, `openai-whisper`, `webrtcvad`.
-
-### Tier 2: Orchestration
-- **T2.1 Boardroom Client Adapter:** Implemented `BoardroomClient` with `httpx` for async communication.
-- **T2.2 Response Synthesizer:** Implemented `ResponseSynthesizer` to clean markdown for TTS/Voice output.
-- **Tests:** Verified client and synthesizer logic.
-
-### Tier 3: Integration
-- **T3.1 Pipeline Orchestrator:** Implemented `AmbiancePipeline` linking VAD -> Whisper -> Boardroom -> Synthesizer. Integrated into `server.py` WebSocket loop.
-- **T3.2 iOS Client Protocol:** Documented WebSocket protocol in `docs/ios_protocol.md` and generated JSON schema.
-- **Architecture Refactor:** Moved `protocol.py` to root `src/ambiance/protocol.py` to resolve circular imports.
+### Backend Deployment (In Progress)
+- **Infrastructure:** Verified Outpost (`mi-0bbd...`) resource availability (3.2GiB RAM free, 0.00 load).
+- **Clone:** Repository successfully cloned to `/home/ubuntu/ambiance` on Outpost.
+- **Execution:**
+    - Attempt 1: `docker-compose` command not found.
+    - Attempt 2: `docker compose` command not found.
+- **Status:** Deployment BLOCKED. Outpost requires Docker Compose plugin installation or transition to a pure `docker run` command.
 
 ### Current Focus
-- **BLUEPRINT COMPLETE.**
-- Backend foundation is established and tested (on Linux).
-- Ready for iOS Client development (Phase 2).
-
+- Resolving Docker environment on Outpost to launch the gateway.
+- Next: Finalize deployment and pivot to iOS SwiftUI scaffolding.
