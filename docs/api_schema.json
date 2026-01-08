@@ -1,0 +1,51 @@
+{
+  "$defs": {
+    "MessageType": {
+      "enum": [
+        "audio",
+        "text",
+        "command",
+        "response",
+        "status",
+        "error"
+      ],
+      "title": "MessageType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "type": {
+      "$ref": "#/$defs/MessageType"
+    },
+    "payload": {
+      "title": "Payload"
+    },
+    "timestamp": {
+      "title": "Timestamp",
+      "type": "number"
+    },
+    "correlation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Correlation Id"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    }
+  },
+  "required": [
+    "type",
+    "payload"
+  ],
+  "title": "AmbianceMessage",
+  "type": "object"
+}

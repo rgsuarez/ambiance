@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ambiance-backend:
+    build: .
+    image: ambiance-backend:latest
+    container_name: ambiance-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_LEVEL=INFO
+      - WHISPER_MODEL=base
+    volumes:
+      - ./logs:/app/logs
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
