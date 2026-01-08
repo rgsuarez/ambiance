@@ -1,23 +1,23 @@
 ---
 document: "SYSTEM_ARCHITECTURE"
-version: "1.0.0"
+version: "2.0.0"
 status: "DRAFT"
 created: "2026-01-06"
-updated: "2026-01-06"
+updated: "2026-01-07"
 owner: "Technical Operations"
 ---
 
 # Ambiance — System Architecture
 
 > **Document Status**: Living Document  
-> **Last Updated**: 2026-01-06  
+> **Last Updated**: 2026-01-07  
 > **Owner**: Technical Operations
 
 ---
 
 ## Overview
 
-Ambiance is the sensory layer that transforms the autonomous AI entity from purely digital to cyber-physical. It integrates Meta Ray-Ban glasses as sensory input, processes observations through a Perception Layer, and feeds structured events into the zeOS Director-Worker orchestration loop.
+Ambiance is the mobile sensory layer for the autonomous AI entity. It utilizes an **iOS application** combined with **AirPods** to provide a "Voice-to-Action" cognitive prosthetic. It processes verbal commands and sensor data, routes them to the zeOS orchestration layer, and executes tasks via CLI agents on the Outpost infrastructure.
 
 ---
 
@@ -25,73 +25,56 @@ Ambiance is the sensory layer that transforms the autonomous AI entity from pure
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    PHYSICAL WORLD                               │
-│  ┌──────────────┐                                               │
-│  │ Meta Ray-Ban │ ← Camera, Microphone, GPS, Accelerometer      │
-│  └──────┬───────┘                                               │
+│                    PHYSICAL WORLD / OPERATOR                    │
+│  ┌──────────────┐    ┌──────────────┐                           │
+│  │   iPhone     │    │   AirPods    │                           │
+│  │ (Sensors/UI) │ ←→ │ (Mic/Audio)  │                           │
+│  └──────┬───────┘    └──────────────┘                           │
 └─────────┼───────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│               PERCEPTION LAYER (Edge Processing)                │
+│               CLIENT LAYER (iOS App)                            │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ Vision      │  │ Audio       │  │ Context     │             │
-│  │ Processor   │  │ Processor   │  │ Synthesizer │             │
-│  │ (frame→text)│  │ (speech→text│  │ (multimodal)│             │
+│  │ Action      │  │ Audio       │  │ Context     │             │
+│  │ Button      │  │ Manager     │  │ Manager     │             │
+│  │ (Trigger)   │  │ (Stream)    │  │ (GPS/Health)│             │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘             │
-│         │ PII Redaction  │ Scrubbing      │ Compression        │
-└─────────┼────────────────┼────────────────┼─────────────────────┘
-          │                │                │
-          ▼                ▼                ▼
+└─────────┼───────────────────────────────────────────────────────┘
+          │ HTTPS / WebSocket
+          ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    STAGING LAYER (S3)                           │
+│                    GATEWAY LAYER (Cloud API)                    │
 │  ┌─────────────────────────────────────────────────────────────┐│
-│  │ s3://ambiance-staging-535471339422/                         ││
-│  │   ├── audio/                                                ││
-│  │   ├── images/                                               ││
-│  │   └── events/                                               ││
+│  │ API Gateway / Load Balancer                                 ││
+│  │ Auth (Zero Echelon ID)                                      ││
 │  └─────────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────────┘
+└─────────┼───────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PROCESSING LAYER                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ Whisper     │  │ Vision      │  │ Event       │             │
-│  │ Transcribe  │  │ Analysis    │  │ Classifier  │             │
+│  │ Whisper     │  │ Intent      │  │ Command     │             │
+│  │ Transcribe  │  │ Classifier  │  │ Parser      │             │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘             │
-└─────────┼────────────────┼────────────────┼─────────────────────┘
-          │                │                │
-          ▼                ▼                ▼
+└─────────┼───────────────────────────────────────────────────────┘
+          │
+          ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    zeOS MEMORY PERSISTENCE                      │
+│                    zeOS ORCHESTRATION                           │
 │  ┌─────────────────────────────────────────────────────────────┐│
-│  │ Perception Journal: timestamped observations, entities,     ││
-│  │ locations, conversations, environmental state               ││
+│  │ AI Boardroom (Directors)                                    ││
+│  │ zeOS Memory (Perception Journal)                            ││
 │  └─────────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────────┘
+└─────────┼───────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DIRECTOR COUNCIL (AI Boardroom)              │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
-│  │ Claude   │ │ Gemini   │ │ ChatGPT  │ │ Grok     │           │
-│  │ Architect│ │ Strategist│ │ Creative │ │Contrarian│           │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘           │
-└─────────────────────────────────────────────────────────────────┘
-          │
-          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    WORKER EXECUTION (Outpost)                   │
-│  Tasks spawned based on physical-world triggers                 │
-└─────────────────────────────────────────────────────────────────┘
-          │
-          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    OUTPUT CHANNELS                              │
+│                    EXECUTION LAYER (Outpost)                    │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ Glasses HUD │  │ Audio       │  │ Phone/Watch │             │
-│  │ (visual)    │  │ (earpiece)  │  │ (haptic)    │             │
+│  │ CLI Agent   │  │ CLI Agent   │  │ CLI Agent   │             │
+│  │ (Claude)    │  │ (Gemini)    │  │ (Bash)      │             │
 │  └─────────────┘  └─────────────┘  └─────────────┘             │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -102,78 +85,58 @@ Ambiance is the sensory layer that transforms the autonomous AI entity from pure
 
 | Resource | Value |
 |----------|-------|
-| Repository | https://github.com/rgsuarez/ambiance |
-| AWS Account | 535471339422 (pending) |
-| AWS Region | us-east-1 |
-| Staging Bucket | TBD: ambiance-staging-535471339422 |
+| Client Platform | iOS 17+ (SwiftUI) |
+| Backend Hosting | AWS Lambda / API Gateway |
+| Transcription | OpenAI Whisper API |
+| Orchestration | zeOS (AI Boardroom) |
+| Execution | Outpost (EC2/SSM) |
 
 ---
 
 ## Component Details
 
-### Perception Layer
+### iOS Client
 
-**Purpose:** Convert raw sensor data to structured observations before reaching Directors.
+**Purpose:** Primary interface for the Operator.
+**Key Features:**
+- **Push-to-Talk:** Action Button integration for instant command.
+- **Background Mode:** Continuous listening/transcription (Meeting Mode).
+- **Visual Feedback:** Cards for complex results (charts, code snippets).
+- **Haptic Feedback:** Confirmation of command receipt/execution.
 
-**Key Design Decisions:**
-- Edge-first processing (on-device or phone app)
-- PII redaction before anything leaves device
-- Structured events, not raw streams
-- Minimal bandwidth (90% reduction target)
+### Gateway Layer
 
-**Technologies (Research):**
-- YOLO for object detection
-- Whisper for speech-to-text
-- CLIP/Jina for embeddings
-
-### Staging Layer
-
-**Purpose:** Landing zone for processed glasses outputs.
-
-**S3 Structure:**
-```
-s3://ambiance-staging-535471339422/
-├── audio/{date}/{timestamp}.mp3
-├── transcripts/{date}/{timestamp}.json
-├── images/{date}/{timestamp}.jpg
-├── events/{date}/{timestamp}.json
-└── metadata/{date}/manifest.json
-```
+**Purpose:** Secure entry point for voice/data streams.
+**Stack:** AWS API Gateway + Lambda.
 
 ### Processing Layer
 
-**Purpose:** Transform staged artifacts into actionable intelligence.
+**Purpose:** Convert audio to structured intent.
+**Workflow:**
+1. **Receive** audio blob.
+2. **Transcribe** via Whisper.
+3. **Parse** text for zeOS commands (e.g., "!delegate", "!project").
+4. **Inject** context (Location, Time, previous turns).
 
-**Lambda Functions (Planned):**
-- `ambiance-transcribe`: Audio → text via Whisper
-- `ambiance-vision`: Image analysis via OpenAI Vision
-- `ambiance-classify`: Event classification and trigger detection
+### zeOS Orchestration
 
-### Output Channels
-
-**HUD Overlays:** Director-generated insights surface via glasses display  
-**Audio Feedback:** Critical alerts via earpiece  
-**Haptic:** Phone/watch notifications for non-visual cues
+**Purpose:** Decide HOW to execute the command.
+- **Simple Command:** Direct CLI execution.
+- **Complex Query:** Route to Boardroom Directors.
+- **Strategic Decision:** Convene Directors for EDB.
 
 ---
 
 ## Privacy Architecture
 
-### Layered Protection Model
+### Mobile Sovereignty
 
 | Layer | Protection |
 |-------|------------|
-| L1: Real-Time | Physical kill switch, "pause capture" voice command |
-| L2: Contextual | Geofence blacklist, time-based rules |
-| L3: Data Governance | Auto-purge TTLs, E2E encryption |
-| L4: Legal | Jurisdiction-aware auto-disable |
-
-### Data Flow Security
-
-1. **Edge scrubbing:** Face blur, PII redaction on-device
-2. **Minimal transmission:** Only structured events leave device by default
-3. **Encrypted storage:** S3 server-side encryption + client-side for sensitive
-4. **Audit trail:** Immutable log of all data access
+| L1: On-Device | Local keyword detection (optional), Mute switch |
+| L2: Transmission | E2E Encryption (TLS 1.3) |
+| L3: Cloud | Ephemeral processing (transcripts stored, audio purged) |
+| L4: Operator | Full audit log of all voice commands |
 
 ---
 
@@ -181,10 +144,10 @@ s3://ambiance-staging-535471339422/
 
 | System | Integration |
 |--------|-------------|
-| zeOS Core | Memory persistence, context injection |
-| Outpost | Worker fleet dispatch |
-| AI Boardroom | Director-level orchestration |
-| Blueprint | Task planning and execution |
+| zeOS Core | Memory persistence, Shell Protocol commands |
+| Outpost | Worker fleet dispatch for CLI execution |
+| AI Boardroom | High-level reasoning for vague queries |
+| iOS HealthKit | Wellness context injection |
 
 ---
 
@@ -192,15 +155,13 @@ s3://ambiance-staging-535471339422/
 
 | Component | Technology |
 |-----------|------------|
-| Edge Processing | Meta SDK + custom bridge |
-| Staging | S3 |
-| Transcription | Whisper API or Deepgram |
-| Vision | OpenAI Vision API |
-| Event Bus | EventBridge or SNS |
-| Compute | Lambda |
-| Memory | zeOS GitHub persistence |
+| Mobile App | Swift / SwiftUI |
+| API | Python (FastAPI) or Node.js |
+| Database | DynamoDB (User settings/Logs) |
+| Storage | S3 (Temp Audio Staging) |
+| AI Models | GPT-4o / Claude 3.5 Sonnet |
 
 ---
 
-*Last verified: 2026-01-06*
-*Architecture based on Outpost Fleet synthesis*
+*Last verified: 2026-01-07*
+*Architecture Pivot: Mobile-First*

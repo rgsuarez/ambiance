@@ -1,9 +1,9 @@
 ---
 document: "MASTER_ROADMAP"
-version: "1.0.0"
+version: "2.0.0"
 status: "ACTIVE"
 created: "2026-01-06"
-updated: "2026-01-06"
+updated: "2026-01-07"
 owner: "Richie Suarez"
 active_blueprint: null
 ---
@@ -11,83 +11,70 @@ active_blueprint: null
 # Ambiance — Master Roadmap
 
 > **Document Status**: Living Document  
-> **Last Updated**: 2026-01-06  
+> **Last Updated**: 2026-01-07  
 > **Owner**: Richie Suarez
 
 ---
 
 ## Strategic Vision
 
-**North Star:** Build a universal cognitive prosthetic powered by an autonomous AI entity with persistent awareness across all life domains. Meta glasses provide the sensory layer that extends this awareness beyond digital into physical reality.
+**North Star:** Build a universal cognitive prosthetic powered by an autonomous AI entity with persistent awareness across all life domains. **iOS devices and AirPods** provide the sensory layer that extends this awareness beyond digital into physical reality.
 
-**Success Metric:** The AI entity makes autonomous decisions based on real-world observations that were never explicitly provided — it sees something, understands the implications, and acts appropriately.
+**Success Metric:** The AI entity makes autonomous decisions based on voice commands and context — it hears a request, understands the implications, and acts appropriately via CLI agents.
 
 ---
 
 ## Phase 1: Foundation (Current)
 
-**Goal**: Establish data pipeline from glasses to zeOS
+**Goal**: Establish iOS Voice-to-Action Pipeline
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Acquire Meta Ray-Ban glasses | 🔲 | Demo scheduled 2026-01-06 |
-| Test data export mechanisms | 🔲 | How to get audio/photos/video out of Meta ecosystem |
-| Create S3 staging bucket | 🔲 | Landing zone for glasses outputs |
-| Prototype voice note pipeline | 🔲 | Audio → S3 → Whisper transcription → zeOS journal |
-| Test privacy controls | 🔲 | Geofence, pause, face blurring capabilities |
+| Scaffold iOS App (SwiftUI) | 🔲 | Basic shell with push-to-talk UI |
+| Implement Audio Capture | 🔲 | Record audio from AirPods/Mic |
+| Build API Gateway | 🔲 | Endpoint to receive audio/text |
+| Connect to zeOS | 🔲 | Route inputs to Boardroom/Outpost |
+| Action Button Integration | 🔲 | Map iPhone Action Button to "Listen" |
 
 ### Phase 1 Complete When:
-- [ ] Glasses acquired and operational
-- [ ] Basic data pipeline working (glasses → S3 → processing)
-- [ ] Privacy boundaries understood and documented
+- [ ] iOS App deployed to TestFlight
+- [ ] Audio successfully streaming to API
+- [ ] CLI agents executing commands from voice input
 
 ---
 
-## Phase 2: Meeting Mode MVP
+## Phase 2: Orchestration & Feedback
 
-**Goal**: Highest-value, lowest-risk use case
+**Goal**: Intelligent routing and bidirectional communication
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Implement meeting detection | 🔲 | 3+ voices for 60+ seconds |
-| Auto-transcription pipeline | 🔲 | Silent capture → Whisper processing |
-| Action item extraction | 🔲 | AI Director processes transcripts |
-| Session journal integration | 🔲 | Meeting notes feed into zeOS |
+| Director Routing | 🔲 | Classify intent -> Route to Director |
+| Text-to-Speech Output | 🔲 | AI speaks back via AirPods |
+| Visual Cards | 🔲 | App displays complex outputs (code/charts) |
+| Meeting Mode | 🔲 | Long-form background recording/transcription |
 
 ### Phase 2 Complete When:
-- [ ] Meeting mode operational end-to-end
-- [ ] Action items auto-extracted and surfaced
-- [ ] Meeting context persists in zeOS memory
+- [ ] Full conversational loop (Talk -> Action -> Speak Back)
+- [ ] Meeting context auto-persisted to zeOS
+- [ ] Complex results displayed on phone screen
 
 ---
 
-## Phase 3: Perception Layer Architecture
+## Phase 3: Context Awareness
 
-**Goal**: Formalize glasses as AI sensory organ
+**Goal**: Leverage iOS sensors for rich context
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Define Perception API | 🔲 | Standard format for glasses → zeOS |
-| Build edge preprocessing | 🔲 | On-device redaction, compression |
-| Implement perception bus | 🔲 | MQTT/WebSocket structured events |
-| Create Perception Journal | 🔲 | Timestamped observations in zeOS |
+| Location Context | 🔲 | "I'm at home" vs "I'm at office" behavior |
+| Health Integration | 🔲 | HealthKit data feeding wellness Director |
+| Photo/Camera Input | 🔲 | "Look at this" visual analysis |
+| Background Refresh | 🔲 | Periodic state sync |
 
 ---
 
-## Phase 4: Autonomous Triggers
-
-**Goal**: Real-world scenarios auto-initiate AI workflows
-
-| Trigger Type | Status | Notes |
-|--------------|--------|-------|
-| Location-based context loading | 🔲 | Enter known location → load project |
-| Meeting mode auto-start | 🔲 | Voice detection triggers |
-| Technical reconnaissance | 🔲 | "Analyze this" command |
-| Anomaly detection | 🔲 | Grok flags inconsistencies |
-
----
-
-## Phase 5: Recursive Capability Discovery
+## Phase 4: Recursive Capability Discovery
 
 **Goal**: AI learns new capabilities from physical world input
 
@@ -100,15 +87,14 @@ active_blueprint: null
 
 ---
 
-## Phase 6: Full Autonomous Loop
+## Phase 5: Full Autonomous Loop
 
 **Goal**: AI independently decides when to observe, analyze, act
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Predictive observation | 🔲 | AI requests observations before operator knows needed |
-| Cross-Director perception routing | 🔲 | Right Director analyzes right input |
-| Federated perception | 🔲 | Multiple operators feed shared intelligence |
+| Predictive suggestion | 🔲 | AI speaks proactive suggestion via AirPods |
+| Federated perception | 🔲 | Multiple inputs feed shared intelligence |
 
 ---
 
@@ -116,10 +102,10 @@ active_blueprint: null
 
 | External Solution | Status | Integration Point |
 |-------------------|--------|-------------------|
-| Deepgram (transcription) | 🔲 Research | Alternative to Whisper |
-| AssemblyAI | 🔲 Research | Real-time transcription |
-| OpenAI Vision | 🔲 Research | Image understanding |
-| Privacy-preserving edge AI | 🔲 Research | On-device processing |
+| OpenAI Whisper | 🔲 Research | Transcription |
+| Apple Speech | 🔲 Research | On-device transcription fallback |
+| FastAPI | 🔲 Research | Backend API |
+| zeOS Shell Protocol | 🔲 Standard | Command format |
 
 ---
 
@@ -132,5 +118,5 @@ active_blueprint: null
 
 ---
 
-*"The glasses are not a peripheral — they are a sensory organ."*
-*— Outpost Fleet Consensus, 2026-01-06*
+*"The phone is the edge processor; AirPods are the interface."*
+*— Ambiance Pivot, 2026-01-07*
