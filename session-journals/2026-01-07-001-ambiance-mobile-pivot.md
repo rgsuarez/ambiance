@@ -1,9 +1,9 @@
 ---
 type: session-journal
 project: ambiance
-status: active
+status: complete
 started: 2026-01-07T06:45:00Z
-ended: null
+ended: 2026-01-08T06:55:00Z
 ---
 
 ## Work Since Last Save
